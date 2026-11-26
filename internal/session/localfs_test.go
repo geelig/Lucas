@@ -15,6 +15,7 @@ import (
 func TestCleanLocalPathExpandsHome(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
+	t.Setenv("USERPROFILE", home)
 	got, err := cleanLocalPath("~")
 	if err != nil {
 		t.Fatal(err)

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -55,7 +56,7 @@ func TestKnownHostsAcceptsNewAndRejectsChanged(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Fatalf("known_hosts mode = %o", info.Mode().Perm())
 	}
 }
@@ -164,7 +165,7 @@ func TestClientConfigUsesChangedHostKeyConfirmation(t *testing.T) {
 		options: SSHOptions{KnownHostsPath: path},
 	}
 	config, cleanup, err := connector.clientConfig(context.Background(), Hooks{
-		HostKey: func(_, _ string) (bool, error) { t.Fatal("unexpected first-contact confirmation"); return false, nil },
+		HostKey:        func(_, _ string) (bool, error) { t.Fatal("unexpected first-contact confirmation"); return false, nil },
 		HostKeyChanged: func(_, _ string) (bool, error) { changedCalled = true; return true, nil },
 	})
 	if err != nil {

@@ -32,6 +32,9 @@ func TestMigrateWebKitDataAtPreservesLocalStorage(t *testing.T) {
 }
 
 func TestDetectProfileOperatingSystemPersistsAndCloses(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix shell required")
+	}
 	dir := t.TempDir()
 	st, err := store.NewAt(dir, filepath.Join(dir, "missing.json"))
 	if err != nil {

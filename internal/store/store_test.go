@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -113,7 +114,7 @@ func TestLegacyImportCompatibilityAndRedaction(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if info.Mode().Perm() != 0o600 {
+	if runtime.GOOS != "windows" && info.Mode().Perm() != 0o600 {
 		t.Fatalf("key permissions = %o", info.Mode().Perm())
 	}
 	for _, name := range []string{profilesFileName, credentialsFileName} {

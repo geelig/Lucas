@@ -3,6 +3,7 @@ package session
 import (
 	"bytes"
 	"context"
+	"runtime"
 	"testing"
 	"time"
 
@@ -10,6 +11,9 @@ import (
 )
 
 func TestLocalConnectorShellAndResize(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix PTY required")
+	}
 	conn, fs, err := NewLocalConnector(store.Profile{Shell: "/bin/sh", Directory: t.TempDir()}).Connect(
 		context.Background(), ConnectOptions{Cols: 90, Rows: 30}, Hooks{},
 	)
