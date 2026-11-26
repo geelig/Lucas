@@ -63,7 +63,7 @@ jobs:
           cp LICENSE NOTICE build/THIRD_PARTY_NOTICES.txt dist/
           cd dist
           zip -qr "Lucas-$version-macos-arm64.zip" Lucas.app LICENSE NOTICE THIRD_PARTY_NOTICES.txt
-          shasum -a 256 *.zip > SHA256SUMS
+          shasum -a 256 *.zip > SHA256SUMS-macos
       - name: Package Windows
         if: matrix.kind == 'windows'
         shell: pwsh
@@ -73,7 +73,7 @@ jobs:
           Copy-Item build/bin/Lucas.exe dist/Lucas.exe
           Copy-Item LICENSE,NOTICE,build/THIRD_PARTY_NOTICES.txt dist/
           Compress-Archive -Path dist/Lucas.exe,dist/LICENSE,dist/NOTICE,dist/THIRD_PARTY_NOTICES.txt -DestinationPath "dist/Lucas-$version-windows-amd64.zip"
-          Get-FileHash -Algorithm SHA256 dist/*.zip | ForEach-Object { "$($_.Hash)  $($_.Path | Split-Path -Leaf)" } | Out-File -Encoding utf8 dist/SHA256SUMS
+          Get-FileHash -Algorithm SHA256 dist/*.zip | ForEach-Object { "$($_.Hash)  $($_.Path | Split-Path -Leaf)" } | Out-File -Encoding utf8 dist/SHA256SUMS-windows
       - name: Package Linux
         if: matrix.kind == 'linux'
         shell: bash
@@ -85,14 +85,14 @@ jobs:
           cp LICENSE NOTICE build/THIRD_PARTY_NOTICES.txt dist/
           chmod +x dist/Lucas
           tar -C dist -czf "dist/Lucas-$version-linux-amd64.tar.gz" Lucas LICENSE NOTICE THIRD_PARTY_NOTICES.txt
-          sha256sum dist/*.tar.gz > dist/SHA256SUMS
+          sha256sum dist/*.tar.gz > dist/SHA256SUMS-linux
       - uses: actions/upload-artifact@v4
         with:
           name: lucas-${{ matrix.kind }}
           path: |
             dist/*.zip
             dist/*.tar.gz
-            dist/SHA256SUMS
+            dist/SHA256SUMS*
           if-no-files-found: error
 
   release:
@@ -106,6 +106,8 @@ jobs:
         with:
           path: dist
           merge-multiple: true
+      - name: Combine checksums
+        run: cat dist/SHA256SUMS-* > dist/SHA256SUMS
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
