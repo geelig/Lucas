@@ -45,6 +45,9 @@ jobs:
       - name: Test frontend
         run: npm test
         working-directory: frontend
+      - name: Install Linux dependencies
+        if: matrix.kind == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev
       - name: Build application
         run: wails build -platform ${{ matrix.platform }}
       - name: Collect notices
