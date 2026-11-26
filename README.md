@@ -2,7 +2,7 @@
 
 Lucas 是一款本地优先的终端与远程文件工作区，提供连接管理、终端、SFTP/FTP 文件管理、资源监控、命令历史和可配置外观。主体使用 Go、Wails、React、TypeScript 和 xterm.js 独立实现。
 
-当前发布版本：**3.1.6**。
+当前发布版本：**3.1.7**。
 
 ## 功能
 
@@ -21,9 +21,9 @@ Lucas 是一款本地优先的终端与远程文件工作区，提供连接管�
 
 | 平台 | 发布文件 | 说明 |
 |---|---|---|
-| macOS（Apple Silicon） | `Lucas-3.1.6-macos-arm64.zip` | 解压后打开 `Lucas.app` |
-| Windows x64 | `Lucas-3.1.6-windows-amd64.zip` | 解压后运行 `Lucas.exe` |
-| Linux x64 | `Lucas-3.1.6-linux-amd64.tar.gz` | 解压后运行 `Lucas` |
+| macOS（Apple Silicon） | `Lucas-3.1.7-macos-arm64.zip` | 解压后打开 `Lucas.app` |
+| Windows x64 | `Lucas-3.1.7-windows-amd64.zip` | 解压后运行 `Lucas.exe` |
+| Linux x64 | `Lucas-3.1.7-linux-amd64.tar.gz` | 解压后运行 `Lucas` |
 | HarmonyOS | 暂不提供 | 当前 Wails 目标平台不包含鸿蒙，需独立 ArkTS 适配，不以其他平台包冒充 |
 
 Linux 解压后如缺少执行权限，可在终端执行 `chmod +x Lucas`。不同操作系统的安全策略可能要求用户确认应用来源。

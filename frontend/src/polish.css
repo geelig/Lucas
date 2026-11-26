@@ -43,7 +43,8 @@
 :root[data-theme='daylight'] .work-tab.active { background: var(--terminal); }
 :root[data-theme='daylight'] .sidebar .profile-row.current { background: color-mix(in srgb, #0a84ff 10%, #e9eef7); }
 :root[data-theme='daylight'] .sidebar .profile-row.selected { background: color-mix(in srgb, #0a84ff 16%, #e9eef7); }
-.app-version { color: var(--faint); font-size: 10px; white-space: nowrap; }
+.app-version { padding: 0 2px; border: 0; border-radius: 4px; color: var(--faint); background: transparent; font-size: 10px; white-space: nowrap; }
+.app-version:hover { color: var(--mint); background: var(--surface-2); }
 :root[data-theme='daylight'] .panel-dock .resource-panel .resource-live { background: var(--surface-2); }
 :root[data-theme='daylight'] .panel-menu,
 :root[data-theme='daylight'] .context-menu { background: rgba(255,255,255,.97); border-color: rgba(0,0,0,.1); }
