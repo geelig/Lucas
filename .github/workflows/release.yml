@@ -1,0 +1,114 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            platform: darwin/arm64
+            kind: macos
+          - os: windows-latest
+            platform: windows/amd64
+            kind: windows
+          - os: ubuntu-latest
+            platform: linux/amd64
+            kind: linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Test Go
+        run: go test ./...
+      - name: Test frontend
+        run: npm test
+        working-directory: frontend
+      - name: Build application
+        run: wails build -platform ${{ matrix.platform }}
+      - name: Collect notices
+        run: python3 scripts/collect_notices.py
+      - name: Package macOS
+        if: matrix.kind == 'macos'
+        shell: bash
+        run: |
+          set -eu
+          version=$(python3 -c 'import json; print(json.load(open("wails.json"))["info"]["productVersion"])')
+          mkdir -p dist
+          cp -R build/bin/Lucas.app dist/Lucas.app
+          cp LICENSE NOTICE build/THIRD_PARTY_NOTICES.txt dist/
+          cd dist
+          zip -qr "Lucas-$version-macos-arm64.zip" Lucas.app LICENSE NOTICE THIRD_PARTY_NOTICES.txt
+          shasum -a 256 *.zip > SHA256SUMS
+      - name: Package Windows
+        if: matrix.kind == 'windows'
+        shell: pwsh
+        run: |
+          $version = (Get-Content wails.json | ConvertFrom-Json).info.productVersion
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item build/bin/Lucas.exe dist/Lucas.exe
+          Copy-Item LICENSE,NOTICE,build/THIRD_PARTY_NOTICES.txt dist/
+          Compress-Archive -Path dist/Lucas.exe,dist/LICENSE,dist/NOTICE,dist/THIRD_PARTY_NOTICES.txt -DestinationPath "dist/Lucas-$version-windows-amd64.zip"
+          Get-FileHash -Algorithm SHA256 dist/*.zip | ForEach-Object { "$($_.Hash)  $($_.Path | Split-Path -Leaf)" } | Out-File -Encoding utf8 dist/SHA256SUMS
+      - name: Package Linux
+        if: matrix.kind == 'linux'
+        shell: bash
+        run: |
+          set -eu
+          version=$(python3 -c 'import json; print(json.load(open("wails.json"))["info"]["productVersion"])')
+          mkdir -p dist
+          cp build/bin/Lucas dist/Lucas
+          cp LICENSE NOTICE build/THIRD_PARTY_NOTICES.txt dist/
+          chmod +x dist/Lucas
+          tar -C dist -czf "dist/Lucas-$version-linux-amd64.tar.gz" Lucas LICENSE NOTICE THIRD_PARTY_NOTICES.txt
+          sha256sum dist/*.tar.gz > dist/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lucas-${{ matrix.kind }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+            dist/SHA256SUMS
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -eu
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            gh release upload "$TAG_NAME" dist/* --clobber
+          else
+            gh release create "$TAG_NAME" dist/* \
+              --title "Lucas $TAG_NAME" \
+              --notes "macOS Apple Silicon、Windows x64 和 Linux x64 原生构建。HarmonyOS 暂不提供原生安装包。"
+          fi

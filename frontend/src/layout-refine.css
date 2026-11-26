@@ -1,0 +1,14 @@
+/* Compact top chrome, tree hierarchy and adjustable file columns. */
+.brand-bar { height: 44px; padding: 0 14px 0 76px; }
+.brand-bar .brand { position: static; }
+.brand-bar .brand-actions { align-self: center; }
+.brand-product { display: none; }
+.brand-mark { width: 24px; height: 24px; }
+.brand-bar .quick-action-button { height: 27px; }
+.group-content { border-left: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent); margin-left: 14px; }
+.sidebar .profile-row.current { box-shadow: inset 2px 0 #007acc; }
+.file-heading-cell { position: relative; min-width: 0; display: flex; align-items: center; }
+.file-heading-cell > button { flex: 1; min-width: 0; height: 27px; padding: 0; border: 0; background: transparent; color: var(--faint); text-align: left; font-size: 9px; }
+.file-heading-cell > .resize-x { right: -3px; width: 7px; }
+.file-table-heading .file-heading-cell:last-child > .resize-x { display: none; }
+.file-row .file-date { white-space: nowrap; }

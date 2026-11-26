@@ -1,0 +1,50 @@
+/* Border handles resize panels; the separate bottom bars scroll content. */
+.sidebar-shell, .sidebar, .left-console, .resource-shell, .file-shell, .work-area > .file-panel { border: 0 !important; }
+.resize-x { width: 8px; display: flex; align-items: center; justify-content: center; }
+.panel-horizontal-scrollbar { position: relative; flex: none; width: calc(100% - 20px); height: 14px; margin: 0 10px; padding: 0; border: 0; background: transparent; appearance: none; touch-action: none; user-select: none; }
+.panel-horizontal-scrollbar::-webkit-slider-runnable-track { height: 14px; background: transparent; }
+.panel-horizontal-scrollbar::-webkit-slider-thumb { width: var(--scroll-thumb-width); height: 12px; margin-top: 1px; border: 0; border-radius: 999px; background: linear-gradient(#5a5a5a, #5a5a5a) center / 100% 4px no-repeat; appearance: none; cursor: ew-resize; }
+.panel-horizontal-scrollbar::-moz-range-track { height: 14px; background: transparent; }
+.panel-horizontal-scrollbar::-moz-range-thumb { width: var(--scroll-thumb-width); height: 12px; border: 0; border-radius: 999px; background: #5a5a5a; cursor: ew-resize; }
+.panel-horizontal-scrollbar:hover::-webkit-slider-thumb, .panel-horizontal-scrollbar:focus-visible::-webkit-slider-thumb { background: linear-gradient(#0a84ff, #0a84ff) center / 100% 4px no-repeat; }
+.panel-horizontal-scrollbar:hover::-moz-range-thumb, .panel-horizontal-scrollbar:focus-visible::-moz-range-thumb { background: #0a84ff; }
+.panel-horizontal-scrollbar:focus-visible { outline: 0; }
+.panel-horizontal-scrollbar.disabled { width: 140px; margin-right: 0; margin-left: calc(50% - 70px); }
+.panel-horizontal-scrollbar.disabled::-webkit-slider-thumb { opacity: .35; cursor: default; }
+.panel-horizontal-scrollbar.disabled::-moz-range-thumb { opacity: .35; cursor: default; }
+.connection-tree, .file-list, .resource-list { overflow-x: auto; }
+.connection-tree::-webkit-scrollbar:horizontal, .file-list::-webkit-scrollbar:horizontal, .resource-list::-webkit-scrollbar:horizontal { display: none; height: 0; }
+.connection-tree .profile-row, .connection-tree .group-row { width: max-content; min-width: 100%; }
+.connection-tree .profile-copy, .connection-tree .group-copy { min-width: max-content; }
+.connection-tree .profile-copy strong, .connection-tree .group-name span, .connection-tree .group-copy strong { overflow: visible; text-overflow: clip; }
+.file-list .file-row, .file-list .file-name { width: max-content; min-width: 100%; }
+.file-list .file-name > span:nth-child(2) { min-width: max-content; }
+.file-list .file-name strong, .file-list .file-name small { overflow: visible; text-overflow: clip; }
+.resource-list .resource-card { width: max-content; min-width: 100%; }
+.resource-list .resource-card-identity { min-width: max-content; }
+.resource-list .resource-card-title strong, .resource-list .resource-address, .resource-list .resource-meta-value,
+.resource-list .resource-peer strong, .resource-list .resource-metric strong, .resource-list .resource-metric small,
+.resource-list .resource-process-command strong, .resource-list .resource-process-command small { overflow: visible; text-overflow: clip; }
+.resource-list .resource-process-columns, .resource-list .resource-process-row { width: max-content; min-width: 100%; grid-template-columns: minmax(max-content, 1fr) 38px 38px 34px; }
+.resource-list .resource-peer { grid-template-columns: max-content max-content; }
+.resource-list .resource-metrics { grid-template-columns: repeat(2, max-content); }
+.file-follow-button { display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 8px; border: 0; border-radius: 6px; color: var(--muted); background: transparent; white-space: nowrap; }
+.file-follow-button.selected { color: var(--mint); background: color-mix(in srgb, var(--mint) 12%, transparent); }
+/* Keep subtle working dividers without restoring heavy black lanes. */
+.sidebar-shell { border-right: 1px solid var(--line) !important; }
+.resource-shell { border-left: 1px solid var(--line) !important; }
+.file-shell.dock-left { border-right: 1px solid var(--line) !important; }
+.file-shell.dock-right { border-left: 1px solid var(--line) !important; }
+.file-shell.dock-bottom { border-top: 1px solid var(--line) !important; }
+.app-status-bar { width: 100%; flex: none; }
+.status-brand-mark { display: inline-flex; width: 22px; height: 22px; flex: none; background: none; box-shadow: none; border-radius: 0; }
+.status-brand-mark svg { display: block; }
+.brand-bar .brand-center { grid-column: 2; }
+.brand-bar .brand-actions { grid-column: 3; }
+.sidebar-settings-button { display: grid; flex: none; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 5px; color: var(--muted); background: transparent; }
+.sidebar-settings-button:hover { color: var(--text); background: var(--surface-2); }
+.panel-menu { left: 12px; right: auto; top: 16px; }
+.status-settings-button { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 24px; padding: 0; border: 0; border-radius: 7px; background: transparent; }
+.status-settings-button:hover { background: var(--surface-2); }
+.workspace-header { -webkit-app-region: drag; }
+.workspace-header button, .workspace-header .work-tab, .workspace-header .workspace-actions { -webkit-app-region: no-drag; }

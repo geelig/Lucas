@@ -1,0 +1,12 @@
+/* One continuous WindTerm-like surface; no nested terminal card. */
+.workspace-header, .workspace-status, .terminal-stage, .terminal-pane, .terminal-view { background: #1c1c1c; }
+.terminal-stage { padding: 0; }
+.tab-panes { inset: 0; gap: 0; }
+.terminal-pane, .terminal-pane.active { border: 0; border-radius: 0; box-shadow: none; }
+.terminal-pane + .terminal-pane { border-left: 1px solid var(--line); }
+.terminal-host { inset: 0 0 0 4px; }
+.pane-caption { height: 25px; background: #1c1c1c; border-bottom: 1px solid var(--line); }
+.left-panel-tabs { height: 31px; padding: 0; gap: 0; }
+.left-panel-tabs button, .left-panel-tabs button.active { flex: none; height: 31px; padding: 0 12px; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--muted); font-size: 11px; }
+.left-panel-tabs button.active { color: var(--text); box-shadow: inset 0 -1px #007acc; }
+.work-tab.active { background: #1c1c1c; }

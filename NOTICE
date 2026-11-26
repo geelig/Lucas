@@ -1,0 +1,6 @@
+Lucas is an independent implementation. It contains no source code or visual
+assets from EdgeTerm or LucasTerm.
+
+Third-party frameworks and libraries retain their own copyright and license
+notices. Before redistribution, collect the notices required by the exact
+dependency versions recorded in go.sum and frontend/package-lock.json.

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/bin/
+.DS_Store
+*.tsbuildinfo
+/Lucas.app/
+/lucas
+__pycache__/
+*.pyc

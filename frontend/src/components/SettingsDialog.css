@@ -1,0 +1,221 @@
+.lucas-settings {
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr);
+  gap: 24px;
+  min-height: 480px;
+  margin: -20px -22px;
+}
+
+.lucas-settings-nav {
+  padding: 20px 12px;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 48%, transparent);
+}
+
+.lucas-settings-nav-heading {
+  padding: 0 11px 12px;
+  color: var(--faint);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
+
+.lucas-settings-category {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 3px 0;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  transition: color .15s, background .15s, border-color .15s;
+}
+
+.lucas-settings-category:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.lucas-settings-category.selected {
+  border-color: color-mix(in srgb, var(--mint) 24%, var(--line));
+  background: color-mix(in srgb, var(--mint) 9%, var(--surface-2));
+  color: var(--text);
+}
+
+.lucas-settings-category-icon {
+  width: 31px;
+  height: 31px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--surface-3);
+  color: var(--muted);
+}
+
+.lucas-settings-category.selected .lucas-settings-category-icon {
+  background: color-mix(in srgb, var(--mint) 13%, transparent);
+  color: var(--mint);
+}
+
+.lucas-settings-category > span:last-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lucas-settings-category strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lucas-settings-category small {
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lucas-settings-content {
+  min-width: 0;
+  padding: 20px 22px 4px 0;
+}
+
+.lucas-settings-content-header {
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lucas-settings-content-header > span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.lucas-settings-content-header h3 {
+  margin: 5px 0 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.lucas-settings-section:last-child {
+  margin-bottom: 20px;
+}
+
+.lucas-settings .appearance-entry-button {
+  margin: -10px 0 24px;
+}
+
+.lucas-settings-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.lucas-settings-action {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface-2);
+  color: var(--muted);
+  text-align: left;
+}
+
+.lucas-settings-action:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.lucas-settings-action > span {
+  flex: none;
+  color: var(--mint);
+}
+
+.lucas-settings-action > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lucas-settings-action strong {
+  color: var(--text);
+  font-size: 11px;
+}
+
+.lucas-settings-action small {
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lucas-settings-export-option {
+  margin-top: 14px;
+}
+
+.lucas-settings .shortcut-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+@media (max-width: 700px) {
+  .lucas-settings {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    min-height: 0;
+  }
+
+  .lucas-settings-nav {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding: 0 0 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .lucas-settings-nav-heading,
+  .lucas-settings-category small {
+    display: none;
+  }
+
+  .lucas-settings-category {
+    width: auto;
+    flex: none;
+    margin: 0;
+    padding: 7px 10px;
+  }
+
+  .lucas-settings-category-icon {
+    width: auto;
+    height: auto;
+    background: transparent;
+  }
+
+  .lucas-settings-content {
+    padding: 0;
+  }
+
+  .lucas-settings-actions,
+  .lucas-settings .shortcut-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+/* Metadata follows the name on a lower line; it never owns a fixed right lane. */
+.file-table-heading { display: block; padding: 0 12px; }
+.file-row, .file-row:hover, .file-row.selected { display: block; padding: 6px 10px; }
+.file-name { width: 100%; display: flex; align-items: flex-start; gap: 8px; }
+.file-name > span:nth-child(2) { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.file-name strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-name .file-meta { color: var(--muted); font-size: 9px; }
+.file-name .row-action { position: absolute; right: 8px; top: 8px; }
+.file-row { position: relative; }
+.group-copy { min-width: 0; display: flex; align-items: baseline; gap: 6px; }
+.group-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.group-copy small { color: var(--faint); font-size: 9px; }
+.sidebar .group-row { min-height: 26px; }

@@ -1,0 +1,226 @@
+package session
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"os"
+	"os/user"
+	"path/filepath"
+	"runtime"
+	"strconv"
+	"sync"
+	"syscall"
+	"testing"
+	"time"
+)
+
+func TestEntryJSONIncludesOwnerAndGroup(t *testing.T) {
+	data, err := json.Marshal(Entry{Name: "file", Owner: "renew", Group: "staff"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got map[string]any
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got["owner"] != "renew" || got["group"] != "staff" {
+		t.Fatalf("owner/group JSON = %s", data)
+	}
+}
+
+func TestLocalFSListResolvesOwnerAndGroup(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix ownership metadata is required")
+	}
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "file"), []byte("data"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	info, err := os.Stat(filepath.Join(root, "file"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	stat, ok := info.Sys().(*syscall.Stat_t)
+	if !ok {
+		t.Fatalf("stat type = %T, want *syscall.Stat_t", info.Sys())
+	}
+	wantOwner := strconv.FormatUint(uint64(stat.Uid), 10)
+	if account, lookupErr := user.LookupId(wantOwner); lookupErr == nil && account.Username != "" {
+		wantOwner = account.Username
+	}
+	wantGroup := strconv.FormatUint(uint64(stat.Gid), 10)
+	if group, lookupErr := user.LookupGroupId(wantGroup); lookupErr == nil && group.Name != "" {
+		wantGroup = group.Name
+	}
+
+	listing, err := NewLocalFS().List(context.Background(), root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(listing.Entries) != 1 {
+		t.Fatalf("entries = %+v", listing.Entries)
+	}
+	entry := listing.Entries[0]
+	if entry.Owner != wantOwner || entry.Group != wantGroup {
+		t.Fatalf("owner/group = %q/%q, want %q/%q", entry.Owner, entry.Group, wantOwner, wantGroup)
+	}
+}
+
+func TestLocalOwnershipResolvesNamesOrFallsBackToNumericIDs(t *testing.T) {
+	info := remoteInfo{name: "file", sys: &syscall.Stat_t{Uid: ^uint32(0), Gid: ^uint32(0)}}
+	entry := localFileEntry("file", "/tmp/file", info)
+	wantOwner, wantGroup := "4294967295", "4294967295"
+	if account, err := user.LookupId(wantOwner); err == nil && account.Username != "" {
+		wantOwner = account.Username
+	}
+	if group, err := user.LookupGroupId(wantGroup); err == nil && group.Name != "" {
+		wantGroup = group.Name
+	}
+	if entry.Owner != wantOwner || entry.Group != wantGroup {
+		t.Fatalf("owner/group = %q/%q, want %q/%q", entry.Owner, entry.Group, wantOwner, wantGroup)
+	}
+}
+
+func TestCleanLocalPathExpandsHome(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	got, err := cleanLocalPath("~")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got != home {
+		t.Fatalf("home path = %q, want %q", got, home)
+	}
+}
+
+func TestLocalFSOperationsAndSymlinkSafeDelete(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("symlink test requires Unix permissions")
+	}
+	root := t.TempDir()
+	outside := filepath.Join(root, "outside")
+	if err := os.Mkdir(outside, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	keep := filepath.Join(outside, "keep.txt")
+	if err := os.WriteFile(keep, []byte("keep"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	target := filepath.Join(root, "tree")
+	fs := NewLocalFS()
+	ctx := context.Background()
+	if err := fs.Mkdir(ctx, filepath.Join(target, "nested")); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(outside, filepath.Join(target, "link")); err != nil {
+		t.Fatal(err)
+	}
+	source := filepath.Join(root, "source.txt")
+	destination := filepath.Join(target, "nested", "copy.txt")
+	if err := fs.Upload(ctx, source, destination, "upload", func(int64, int64) {}); err == nil {
+		t.Fatal("expected missing source error")
+	}
+	if err := os.WriteFile(source, []byte("payload"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	var progress [][2]int64
+	if err := fs.Upload(ctx, source, destination, "upload", func(done, total int64) {
+		progress = append(progress, [2]int64{done, total})
+	}); err != nil {
+		t.Fatal(err)
+	}
+	listing, err := fs.List(ctx, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(listing.Entries) != 2 {
+		t.Fatalf("entries = %+v", listing.Entries)
+	}
+	for _, entry := range listing.Entries {
+		if entry.Name == "link" && (!entry.Symlink || entry.Directory) {
+			t.Fatalf("symlink followed: %+v", entry)
+		}
+	}
+	download := filepath.Join(root, "download.txt")
+	if err := fs.Download(ctx, destination, download, "download", nil); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile(download)
+	if err != nil || !bytes.Equal(got, []byte("payload")) {
+		t.Fatalf("download = %q, %v", got, err)
+	}
+	renamed := filepath.Join(root, "renamed.txt")
+	if err := fs.Rename(ctx, download, renamed); err != nil {
+		t.Fatal(err)
+	}
+	if err := fs.Delete(ctx, target, false); err == nil {
+		t.Fatal("expected non-recursive delete to fail")
+	}
+	if err := fs.Delete(ctx, target, true); err != nil {
+		t.Fatal(err)
+	}
+	if got, err := os.ReadFile(keep); err != nil || string(got) != "keep" {
+		t.Fatalf("symlink target was modified: %q, %v", got, err)
+	}
+	if len(progress) == 0 || progress[len(progress)-1] != [2]int64{7, 7} {
+		t.Fatalf("progress = %v", progress)
+	}
+	home, err := fs.Home(ctx)
+	if err != nil || !filepath.IsAbs(home) {
+		t.Fatalf("home = %q, %v", home, err)
+	}
+}
+
+type blockingFile struct {
+	started chan struct{}
+	release chan struct{}
+	once    sync.Once
+}
+
+func (b *blockingFile) Read([]byte) (int, error) {
+	b.once.Do(func() { close(b.started) })
+	<-b.release
+	return 0, os.ErrClosed
+}
+func (b *blockingFile) Write(p []byte) (int, error) { return len(p), nil }
+func (b *blockingFile) Close() error {
+	select {
+	case <-b.release:
+	default:
+		close(b.release)
+	}
+	return nil
+}
+
+func TestTransferTrackerCancelClosesFiles(t *testing.T) {
+	var tracker transferTracker
+	ctx, err := tracker.begin(context.Background(), "t1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	file := &blockingFile{started: make(chan struct{}), release: make(chan struct{})}
+	tracker.setFiles("t1", file)
+	done := make(chan error, 1)
+	go func() {
+		_, err := copyWithProgress(ctx, file, file, 1, nil)
+		done <- err
+	}()
+	<-file.started
+	if err := tracker.Cancel("t1"); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.Canceled) {
+			t.Fatalf("copy error = %v", err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("cancel did not unblock the transfer")
+	}
+	tracker.end("t1")
+	if err := tracker.Cancel("t1"); !errors.Is(err, ErrTransferNotFound) {
+		t.Fatalf("cancel error = %v", err)
+	}
+}

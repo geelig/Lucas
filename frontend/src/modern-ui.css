@@ -1,0 +1,16 @@
+/* Readable Apple-like resource typography and drag-time terminal layering. */
+.is-resizing .workspace { position: relative; z-index: 10; }
+.is-resizing .resize-handle { z-index: 100; }
+.panel-dock .resource-panel .resource-card-title strong { font-size: 12px; }
+.panel-dock .resource-panel .resource-peer strong { font-size: 12px; }
+.panel-dock .resource-panel .resource-live-heading { font-size: 11px; }
+.panel-dock .resource-panel .resource-metric > span { font-size: 10px; }
+.panel-dock .resource-panel .resource-metric > strong { font-size: 18px; }
+.panel-dock .resource-panel .resource-metric > small { font-size: 10px; }
+.panel-dock .resource-panel .resource-network strong { font-size: 15px; }
+.panel-dock .resource-panel .resource-process-heading { font-size: 11px; }
+.panel-dock .resource-panel .resource-process-columns { font-size: 9px; }
+.panel-dock .resource-panel .resource-process-row { min-height: 34px; font-size: 10px; }
+.panel-dock .resource-panel .resource-process-command strong { font-size: 11px; }
+.panel-dock .resource-panel .resource-process-command small { font-size: 9px; }
+.panel-dock .resource-panel .resource-process-kill { font-size: 10px; padding: 5px 6px; }

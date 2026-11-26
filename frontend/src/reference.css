@@ -1,0 +1,32 @@
+/* Reference-inspired compact tree and session lists. */
+.brand-bar { height: 64px; padding: 24px 16px 8px 12px; }
+.brand-bar .brand { position: absolute; left: 12px; bottom: 10px; }
+.brand-bar .brand-actions { align-self: end; }
+.sidebar .search-box { height: 29px; margin: 5px 8px 8px; padding: 0 4px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.sidebar .connection-tree { padding: 0 4px 10px; }
+.sidebar .group-row, .sidebar .profile-row { min-height: 26px; margin: 0; border-radius: 3px; }
+.sidebar .profile-open { gap: 7px; padding: 3px 5px; }
+.sidebar .protocol-gem { width: 16px; height: 16px; border: 0; border-radius: 0; background: transparent; }
+.sidebar .profile-copy strong { font-size: 12px; font-weight: 500; }
+.sidebar .group-name { font-size: 12px; }.sidebar .group-toggle { width: 17px; }
+.sidebar .profile-row:hover, .sidebar .group-row:hover { background: var(--surface-2); }
+.sidebar .profile-row.current { background: #333333; }
+.panel-dock .resource-panel .resource-header { padding: 8px 10px; gap: 7px; border-bottom: 1px solid var(--line); }
+.panel-dock .resource-panel .resource-heading-icon { display: none; }
+.panel-dock .resource-panel .resource-heading span { display: none; }
+.panel-dock .resource-panel .resource-heading h2 { font-size: 12px; letter-spacing: 0; }
+.panel-dock .resource-panel .resource-stats { display: none; }
+.panel-dock .resource-panel .resource-filter { display: block; padding: 0 8px; border-bottom: 1px solid var(--line); }
+.panel-dock .resource-panel .resource-filter input { width: 100%; height: 29px; padding: 0; border: 0; background: transparent; color: var(--muted); font-size: 11px; }
+.panel-dock .resource-panel .resource-list { gap: 0; padding: 0; }
+.panel-dock .resource-panel .resource-card, .panel-dock .resource-panel .resource-card.active { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.panel-dock .resource-panel .resource-card.active { box-shadow: inset 2px 0 #007acc; background: #2a2a2a; }
+.panel-dock .resource-panel .resource-card-focus { padding: 6px 25px 6px 9px; }
+.panel-dock .resource-panel .resource-card-top { gap: 7px; padding: 0; }
+.panel-dock .resource-panel .resource-system { width: 17px; height: 17px; border: 0; border-radius: 0; background: transparent; }
+.panel-dock .resource-panel .resource-card-title strong { font-size: 11px; font-weight: 500; }
+.panel-dock .resource-panel .resource-protocol, .panel-dock .resource-panel .resource-address, .panel-dock .resource-panel .resource-meta, .panel-dock .resource-panel .resource-card-footer { display: none; }
+.panel-dock .resource-panel .resource-card-close { top: 4px; right: 5px; width: 20px; height: 20px; }
+.panel-dock .resource-panel .resource-live { margin: 0 8px 8px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.resource-shell > .resize-x { left: 0; right: auto; }
+.file-shell.dock-right > .resize-x { left: 0; right: auto; }

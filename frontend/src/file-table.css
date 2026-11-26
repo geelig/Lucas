@@ -1,0 +1,29 @@
+.file-table { flex: 1; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; }
+.file-table .file-list { flex: none; min-height: 0; overflow: visible; padding: 0; }
+.file-table-heading, .file-table .file-row {
+  display: grid;
+  grid-template-columns: minmax(250px,1.5fr) 158px 190px 90px 112px 92px 92px;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-width: 1120px;
+  padding: 0 12px;
+}
+.file-table-heading { position: sticky; z-index: 3; top: 0; height: 31px; color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--line); font-size: 11px; }
+.file-table-heading > * { min-width: 0; text-align: left; white-space: nowrap; }
+.file-table-heading button { height: 100%; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; }
+.file-table-heading button:hover { color: var(--text); }
+.file-table .file-row { min-height: 33px; margin: 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent); border-radius: 0; color: var(--muted); font-size: 12px; }
+.file-table .file-row:hover { background: color-mix(in srgb, var(--surface-3) 55%, transparent); }
+.file-table .file-row.selected { background: color-mix(in srgb, #0a84ff 18%, transparent); }
+.file-table .file-row:focus-visible { outline: 1px solid #0a84ff; outline-offset: -1px; }
+.file-table .file-name { min-width: 0; display: flex; flex-direction: row; align-items: center; gap: 8px; overflow: hidden; }
+.file-table .file-name strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); font-size: 12px; font-weight: 500; }
+.file-table .file-kind { flex: none; }
+.file-table .file-date, .file-table .file-type, .file-table .file-size,
+.file-table .file-permissions, .file-table .file-owner, .file-table .file-group { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 11px; text-align: left; }
+.file-table .file-size { text-align: right; font-variant-numeric: tabular-nums; }
+.file-table .file-permissions { font-family: var(--font-mono, monospace); }
+.file-toolbar { min-height: 40px; }
+.file-toolbar .icon-button { width: 28px; height: 28px; }
+.file-follow-button { width: 28px; height: 28px; padding: 0; justify-content: center; font-size: 11px; }

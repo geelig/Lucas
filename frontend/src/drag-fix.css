@@ -1,0 +1,10 @@
+/* Dragging never reflows labels into multi-line text. */
+.profile-copy, .profile-copy strong, .group-name span,
+.file-name, .file-name strong, .resource-card-title strong,
+.resource-peer strong, .resource-meta-value { white-space: nowrap; }
+.work-tab { flex: none; min-width: 180px; max-width: 240px; white-space: nowrap; }
+.work-tab strong { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-strip { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; }
+.pane-caption > span { white-space: nowrap; }
+.is-resizing .terminal-stage { position: relative; z-index: 11; }
+.is-resizing .workspace-header, .is-resizing .workspace-status { position: relative; z-index: 11; }

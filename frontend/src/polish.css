@@ -1,0 +1,71 @@
+/* Final visual pass: quiet Apple-like surfaces, crisp hierarchy and feedback. */
+.sidebar-shell, .resource-shell { background: #1b1b1e; }
+.panel-dock-tabs { background: color-mix(in srgb, var(--surface) 88%, #fff); border-bottom-color: rgba(255,255,255,.065); }
+.panel-dock-tabs .panel-dock-tab-scroll > button { position: relative; border-radius: 6px; transition: color .16s ease, background .16s ease; }
+.panel-dock-tabs .panel-dock-tab-scroll > button:hover { color: var(--text); background: rgba(255,255,255,.045); }
+.panel-dock-tabs .panel-dock-tab-scroll > button.active,
+.terminal-unified .left-panel-tabs button.active { color: #f5f5f7; background: rgba(255,255,255,.065); box-shadow: inset 0 -2px #5eead4; }
+.left-panel-settings { transition: color .16s ease, background .16s ease, transform .16s ease; }
+.left-panel-settings:hover { color: #f5f5f7; transform: rotate(12deg); }
+.sidebar .search-box { height: 30px; margin: 7px 8px 9px; padding: 0 9px; border: 1px solid rgba(255,255,255,.07); border-radius: 8px; background: rgba(255,255,255,.025); }
+.sidebar .search-box:focus-within { border-color: rgba(94,234,212,.45); background: rgba(255,255,255,.04); }
+.sidebar .group-row, .sidebar .profile-row { margin: 1px 4px; border-radius: 6px; }
+.sidebar .profile-row.current { background: color-mix(in srgb, #5eead4 9%, #2c2c2e); }
+.sidebar .profile-row.selected { background: color-mix(in srgb, #0a84ff 14%, #2c2c2e); box-shadow: inset 0 0 0 1px rgba(10,132,255,.24); }
+.sidebar .group-copy small { padding: 1px 5px; border-radius: 5px; background: rgba(255,255,255,.04); font-variant-numeric: tabular-nums; }
+.workspace-header { background: #202022; border-bottom-color: rgba(255,255,255,.07); }
+.work-tab { transition: background .16s ease, color .16s ease; }
+.work-tab:hover { background: rgba(255,255,255,.035); }
+.work-tab.active { background: #1c1c1c; }
+.work-tab.active::after { background: linear-gradient(90deg,#5eead4,#60a5fa); }
+.workspace-actions .icon-button, .pane-caption .icon-button { border-radius: 7px; transition: color .15s ease, background .15s ease; }
+.workspace-actions .icon-button:hover:not(:disabled), .pane-caption .icon-button:hover:not(:disabled) { color: #f5f5f7; background: rgba(255,255,255,.07); }
+.pane-caption { background: #1e1e20; border-bottom-color: rgba(255,255,255,.055); }
+.resource-history-search { border-radius: 8px; }
+.resource-history-row { border-radius: 6px; }
+.resource-history-row:hover:not(:disabled) { background: rgba(94,234,212,.065); }
+.panel-dock .resource-panel .resource-live { border-color: rgba(255,255,255,.075); border-radius: 10px; background: #222224; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.panel-dock .resource-panel .resource-metric { background: rgba(255,255,255,.035); }
+.panel-menu, .context-menu { border-color: rgba(255,255,255,.11); background: rgba(38,38,42,.97); box-shadow: 0 18px 50px rgba(0,0,0,.32); }
+.panel-menu-item { transition: background .12s ease, color .12s ease; }
+.app-status-bar { background: #1b1b1d; border-top-color: rgba(255,255,255,.065); }
+.status-settings-button { transition: transform .16s ease, background .16s ease; }
+.status-settings-button:hover { transform: translateY(-1px); background: rgba(255,255,255,.06); }
+.modal { box-shadow: 0 28px 90px rgba(0,0,0,.45); }
+.field input, .field select, .field textarea { transition: border-color .15s ease, background .15s ease, box-shadow .15s ease; }
+.field input:focus, .field select:focus, .field textarea:focus { box-shadow: 0 0 0 3px rgba(94,234,212,.08); }
+:root[data-theme='daylight'] .sidebar-shell,
+:root[data-theme='daylight'] .resource-shell,
+:root[data-theme='daylight'] .app-status-bar { background: var(--surface); }
+:root[data-theme='daylight'] .panel-dock-tabs,
+:root[data-theme='daylight'] .workspace-header,
+:root[data-theme='daylight'] .pane-caption { background: var(--surface-2); }
+:root[data-theme='daylight'] .work-tab.active { background: var(--terminal); }
+:root[data-theme='daylight'] .sidebar .profile-row.current { background: color-mix(in srgb, #0a84ff 10%, #e9eef7); }
+:root[data-theme='daylight'] .sidebar .profile-row.selected { background: color-mix(in srgb, #0a84ff 16%, #e9eef7); }
+.app-version { color: var(--faint); font-size: 10px; white-space: nowrap; }
+:root[data-theme='daylight'] .panel-dock .resource-panel .resource-live { background: var(--surface-2); }
+:root[data-theme='daylight'] .panel-menu,
+:root[data-theme='daylight'] .context-menu { background: rgba(255,255,255,.97); border-color: rgba(0,0,0,.1); }
+:root[data-theme='daylight'] .panel-dock-tabs .panel-dock-tab-scroll > button.active { color: var(--text); background: rgba(0,0,0,.055); }
+@media (prefers-reduced-motion: reduce) {
+  .left-panel-settings, .status-settings-button, .work-tab, .panel-dock-tab-scroll > button { transition: none; }
+  .left-panel-settings:hover, .status-settings-button:hover { transform: none; }
+}
+
+/* Wails 2 uses this property for both full-screen and windowed dragging. */
+.workspace-header, .panel-dock-tabs, .welcome-workspace, .app-status-bar { --wails-draggable: drag; }
+.workspace-header button, .workspace-header input, .workspace-header .work-tab,
+.panel-dock-tabs button, .welcome-workspace button, .welcome-workspace input,
+.app-status-bar button { --wails-draggable: no-drag; }
+
+:root { --ui-primary-size: 12px; --ui-secondary-size: 10px; --ui-control-size: 11px; }
+.panel-dock-tabs .panel-dock-tab-scroll > button,
+.profile-copy strong, .group-name, .work-tab strong { font-size: var(--ui-primary-size); }
+.profile-copy small, .group-copy small, .resource-card .resource-address,
+.resource-meta-row, .resource-card-footer, .app-status-bar { font-size: var(--ui-secondary-size); }
+.file-follow-button, .command-dock button, .resource-refresh,
+.resource-process-sort button { font-size: var(--ui-control-size); }
+.panel-dock .resource-panel .resource-metric > strong { font-size: 16px; }
+.panel-dock .resource-panel .resource-process-row,
+.panel-dock .resource-panel .resource-process-command strong { font-size: 11px; }

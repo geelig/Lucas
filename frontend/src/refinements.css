@@ -1,0 +1,25 @@
+/* Compact Apple-inspired proportions and draggable hairlines. */
+.brand-bar { padding-left: 76px; }
+.brand-mark { width: 26px; height: 26px; }
+.protocol-gem { width: 22px; height: 22px; border-radius: 7px; }
+.profile-row { min-height: 34px; }.profile-open { gap: 8px; padding-top: 4px; padding-bottom: 4px; }
+.sidebar-shell, .file-shell, .resource-shell { position: relative; flex: none; display: flex; min-width: 0; min-height: 0; }
+.sidebar-shell > .sidebar, .sidebar-shell > .left-console { width: 100%; flex: 1; }
+.file-shell > .file-panel, .resource-shell > .resource-panel { width: 100%; height: 100%; flex: 1; margin: 0; }
+.resize-handle { position: absolute; z-index: 35; flex: none; background: transparent; }
+.resize-x { top: 0; bottom: 0; right: 0; width: 6px; cursor: col-resize; }
+.resize-y { left: 0; right: 0; top: 0; height: 6px; cursor: row-resize; }
+.file-shell.dock-bottom { flex-direction: column; }.file-shell.dock-bottom > .file-panel { width: 100%; height: 100%; }
+.resize-handle:hover, .resize-handle:focus-visible { background: color-mix(in srgb, #0a84ff 38%, transparent); outline: 0; }
+.panel-dock .resource-panel .resource-header { padding: 12px 13px 9px; }
+.panel-dock .resource-panel .resource-heading-icon { width: 28px; height: 28px; border-radius: 9px; }
+.panel-dock .resource-panel .resource-heading h2 { font-size: 15px; }
+.panel-dock .resource-panel .resource-stats { padding: 0 10px 9px; gap: 5px; }
+.panel-dock .resource-panel .resource-stat { display: flex; align-items: center; justify-content: space-between; padding: 6px 7px; }
+.panel-dock .resource-panel .resource-stat strong { margin: 0; font-size: 15px; }
+.panel-dock .resource-panel .resource-section-title { padding: 8px 13px 6px; }
+.panel-dock .resource-panel .resource-list { gap: 6px; padding: 2px 8px 8px; }
+.panel-dock .resource-panel .resource-card-focus { padding: 9px; }
+.panel-dock .resource-panel .resource-meta { gap: 4px; margin-top: 7px; padding-top: 7px; }
+.panel-dock .resource-panel .resource-card-footer { margin-top: 6px; }
+.zmodem-status > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }.zmodem-reveal { flex: none; border: 0; border-radius: 6px; padding: 5px 7px; color: #fff; background: #0a84ff; font-size: 10px; }
