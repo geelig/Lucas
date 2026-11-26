@@ -37,16 +37,16 @@ while pos < len(raw):
         continue
     parts.append(f"\n{'=' * 72}\n{module['Path']} {module.get('Version', '')}\n")
     for file in files:
-        parts.append(f"\n--- {file.name} ---\n{file.read_text(errors='replace')}")
+        parts.append(f"\n--- {file.name} ---\n{file.read_text(encoding='utf-8', errors='replace')}")
 
 for package in sorted((ROOT / "frontend" / "node_modules").rglob("package.json")):
-    data = json.loads(package.read_text())
+    data = json.loads(package.read_text(encoding='utf-8'))
     files = license_files(package.parent)
     if not files:
         continue
     parts.append(f"\n{'=' * 72}\nnpm: {data['name']} {data.get('version', '')}\n")
     for file in files:
-        parts.append(f"\n--- {file.name} ---\n{file.read_text(errors='replace')}")
+        parts.append(f"\n--- {file.name} ---\n{file.read_text(encoding='utf-8', errors='replace')}")
 
-OUT.write_text("".join(parts))
+OUT.write_text("".join(parts), encoding='utf-8')
 print(OUT)
