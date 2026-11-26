@@ -20,7 +20,7 @@ jobs:
           - os: windows-latest
             platform: windows/amd64
             kind: windows
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             platform: linux/amd64
             kind: linux
     runs-on: ${{ matrix.os }}
@@ -97,7 +97,7 @@ jobs:
 
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
